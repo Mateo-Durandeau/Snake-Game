@@ -28,6 +28,8 @@ int max = square-1;
 
 int status = 0;
 
+int bestScore = 0;
+
 
 // Constructeur des fonctions
 // ################################################################################
