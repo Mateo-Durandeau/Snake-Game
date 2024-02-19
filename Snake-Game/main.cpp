@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib> // Pour srand() et rand()
 #include <ctime>   // Pour time()
+#include <iostream>
 
 
 // ################################################################################
@@ -9,6 +10,7 @@
 int square = 25;
 int size = square * square;
 int size_x = size;
+int middle_size_x = size_x/2;
 int size_y = size;
 
 int longueur = 1;
@@ -29,6 +31,8 @@ int max = square-1;
 int status = 0;
 
 int bestScore = 0;
+std::string bestScoreString = std::to_string(bestScore);
+
 
 
 // Constructeur des fonctions
@@ -48,6 +52,22 @@ int main()
     std::vector<sf::RectangleShape> snakeBody;
     sf::Vector2i segmentSize(square, square); // Taille de chaque segment du serpent en entiers
 
+
+    // chargement de la font
+    sf::Font font;
+    if (!font.loadFromFile("kode.ttf")) {
+        std::cerr << "Error loading font" << std::endl;
+    }
+
+
+    sf::Text text;
+
+    // select the font
+    text.setFont(font); // font is a sf::Font
+    text.setString(bestScoreString);
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::Blue);
+    text.setPosition(10, 10);
 
 
     // ################################################################################
@@ -109,6 +129,13 @@ int main()
         }
 
 
+        // GESTION DE L'AFFICHAGE
+        if (bestScore < longueur) {
+            bestScore = longueur;
+            bestScoreString = std::to_string(bestScore);
+            text.setString("Best Score : " + bestScoreString);
+        }
+
 
         // GESTION DE LA POMME
         // ################################################################################
@@ -149,11 +176,18 @@ int main()
         
 
         // GESTION DE L'AFFICHAGE
+        // Affichage du snake
         for (int i = 0; i < longueur; i++)
         {
             window.draw(snakeBody[i]);
         }
+
+        // Affichage des pommes
         window.draw(apple);
+
+        // Affichage du score
+        window.draw(text);
+
 
         window.display();
 
